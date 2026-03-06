@@ -21,8 +21,9 @@ import java.util.logging.Logger;
 
 public class Engine {
     public static final ArrayList<Engine> REGISTERED = new ArrayList<>();
-    private static final List<Component> LORE = Collections.singletonList(
-            Component.text("Hold the engine in your main hand so the engine accelerates you and your boat.", NamedTextColor.GRAY)
+    private static final List<Component> LORE = List.of(
+            Component.text("Hold this engine in your main hand", NamedTextColor.GRAY),
+            Component.text("to accelerate your boat while in water.", NamedTextColor.GRAY)
     );
     public final String key;
     private final ItemStack item;
