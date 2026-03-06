@@ -5,6 +5,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -36,6 +37,43 @@ public class BoatsCommand implements CommandExecutor, Listener {
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
+        if (args.length > 0) {
+            if (!args[0].equalsIgnoreCase("give")) {
+                sender.sendMessage("Usage: /boats or /boats give <engine>");
+                return true;
+            }
+
+            if (!sender.hasPermission("speedyboats.admin")) {
+                sender.sendMessage("You do not have permission to use this command.");
+                return true;
+            }
+
+            if (args.length != 2) {
+                sender.sendMessage("Usage: /boats give <engine>");
+                return true;
+            }
+
+            Optional<Engine> engine = Engine.byKey(args[1]);
+            if (engine.isEmpty()) {
+                sender.sendMessage("Unknown engine: " + args[1]);
+                return true;
+            }
+
+            if (sender instanceof Player player) {
+                player.getInventory().addItem(engine.get().getItem());
+                sender.sendMessage("Given yourself a " + args[1] + " engine.");
+                return true;
+            }
+
+            if (sender instanceof ConsoleCommandSender) {
+                sender.sendMessage("Console cannot receive items. Run this command as a player.");
+                return true;
+            }
+
+            sender.sendMessage("This command can only give items to players.");
+            return true;
+        }
+
         if (!(sender instanceof Player player)) {
             sender.sendMessage("Only players can run this command.");
             return true;
@@ -142,6 +180,11 @@ public class BoatsCommand implements CommandExecutor, Listener {
 
     @EventHandler
     public void onInventoryClose(InventoryCloseEvent event) {
+        if (recipeViewers.contains(event.getPlayer().getUniqueId()) && event.getInventory() instanceof CraftingInventory craftingInventory) {
+            craftingInventory.setMatrix(new ItemStack[9]);
+            craftingInventory.setResult(null);
+        }
+
         recipeViewers.remove(event.getPlayer().getUniqueId());
     }
 

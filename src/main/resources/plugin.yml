@@ -7,5 +7,13 @@ author: Sivery
 website: github.com/flerouwu/speedyboats
 commands:
   boats:
-    description: Opens the boat engine recipe menu.
-    usage: /boats
+    description: Opens boat engine recipes and admin give command.
+    usage: /boats | /boats give <engine>
+    permission: speedyboats.use
+permissions:
+  speedyboats.use:
+    description: Allows using /boats recipe viewer
+    default: true
+  speedyboats.admin:
+    description: Allows giving engine items via /boats give <engine>
+    default: op
