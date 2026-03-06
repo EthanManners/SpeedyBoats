@@ -34,6 +34,38 @@ public class Engine {
         this.recipe = recipe;
     }
 
+    public ItemStack getItem() {
+        return item.clone();
+    }
+
+    public @Nullable CraftingRecipe getRecipe() {
+        return recipe;
+    }
+
+    public static @Nullable String getEngineKey(SpeedyBoats plugin, @Nullable ItemStack item) {
+        if (item == null) {
+            return null;
+        }
+
+        ItemMeta meta = item.getItemMeta();
+        if (meta == null) {
+            return null;
+        }
+
+        return meta.getPersistentDataContainer().get(
+                new NamespacedKey(plugin, "EngineKey"),
+                PersistentDataType.STRING
+        );
+    }
+
+    public static boolean isEngine(SpeedyBoats plugin, @Nullable ItemStack item) {
+        return getEngineKey(plugin, item) != null;
+    }
+
+    public static Optional<Engine> byKey(String key) {
+        return REGISTERED.stream().filter(engine -> engine.key.equals(key)).findFirst();
+    }
+
     public static @Nullable Engine FromConfig(SpeedyBoats plugin, String key, ConfigurationSection section) {
         if (!ValidateSection(section)) {
             Logger.getAnonymousLogger().info("Section wasn't valid!");
@@ -136,32 +168,32 @@ public class Engine {
             Logger.getAnonymousLogger().warning("Name was null!");
             return false;
         }
-        
+
         if (multiplier == -1) {
             Logger.getAnonymousLogger().warning("Multiplier was null (or -1)!");
             return false;
         }
-        
+
         if (material == null) {
             Logger.getAnonymousLogger().warning("Material was null!");
             return false;
         }
-        
+
         if (recipe == null) {
             Logger.getAnonymousLogger().warning("Recipe was null!");
             return false;
         }
-        
+
         if (recipe.size() != 3) {
             Logger.getAnonymousLogger().warning("Recipe size wasn't 3!");
             return false;
         }
-        
+
         if (ingredients == null) {
             Logger.getAnonymousLogger().warning("Ingredients was null!");
             return false;
         }
-        
+
         return true;
     }
 }

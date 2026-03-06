@@ -5,3 +5,7 @@ api-version: '1.20'
 description: Give your boats a little extra SPEEED
 author: Sivery
 website: github.com/flerouwu/speedyboats
+commands:
+  boats:
+    description: Opens the boat engine recipe menu.
+    usage: /boats

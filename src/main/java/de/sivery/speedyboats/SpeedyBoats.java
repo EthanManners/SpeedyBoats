@@ -17,6 +17,12 @@ public class SpeedyBoats extends JavaPlugin {
         logger.info("Registering event listener...");
         server.getPluginManager().registerEvents(new BoatListener(this), this);
 
+        BoatsCommand boatsCommand = new BoatsCommand(this);
+        server.getPluginManager().registerEvents(boatsCommand, this);
+        if (getCommand("boats") != null) {
+            getCommand("boats").setExecutor(boatsCommand);
+        }
+
         logger.info("Loading config...");
         saveResource("config.yml", false);
         config = getConfig();
