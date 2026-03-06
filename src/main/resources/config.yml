@@ -5,49 +5,53 @@ engines:
     name: "<red>Engine Level 1</red>"
     
     # Multiplier of the velocity when holding the item.
-    multiplier: 1.0
+    multiplier: 0.5
     
     # Material of the resulting item.
-    material: "sugar"
+    material: "smoker"
     
     ingredients:
-      R: "redstone"
+      B: "coal_block"
+      C: "copper_ingot"
       I: "iron_ingot"
-      S: "sugar"
+      R: "redstone"
+      P: "piston"
     
     # Recipe that is registered (requires a restart!)
     recipe:
-      - " R "
-      - "ISI"
-      - " R "
+      - "IRI"
+      - "CPC"
+      - "CBC"
 
   two:
     name: "<red>Engine Level 2</red>"
-    multiplier: 2.0
-    material: "redstone"
+    multiplier: 1.0
+    material: "furnace"
     
     ingredients:
       D: "diamond"
       # You can use speedyboats:key to reference another engine.
-      B: "speedyboats:one"
+      S: "speedyboats:one"
       G: "gold_ingot"
+      P: "piston"
     
     recipe:
-      - " D "
-      - "GBG"
-      - " D "
+      - "DDD"
+      - "GSG"
+      - "GPG"
 
   three:
     name: "<red>Engine Level 3</red>"
-    multiplier: 3.0
-    material: "popped_chorus_fruit"
+    multiplier: 2.0
+    material: "blast_furnace"
     
     ingredients:
       N: "netherite_ingot"
       S: "nautilus_shell"
       B: "speedyboats:two"
+      P: "piston"
     
     recipe:
-      - " N "
-      - "SBS"
-      - " N "
+      - " S "
+      - "NBN"
+      - "NPN"
