@@ -21,8 +21,9 @@ import java.util.logging.Logger;
 
 public class Engine {
     public static final ArrayList<Engine> REGISTERED = new ArrayList<>();
-    private static final List<Component> LORE = Collections.singletonList(
-            Component.text("Hold the engine in your main hand so the engine accelerates you and your boat.", NamedTextColor.GRAY)
+    private static final List<Component> LORE = List.of(
+            Component.text("Hold this engine in your main hand", NamedTextColor.GRAY),
+            Component.text("to accelerate your boat while in water.", NamedTextColor.GRAY)
     );
     public final String key;
     private final ItemStack item;
@@ -32,6 +33,38 @@ public class Engine {
         this.key = key;
         this.item = item;
         this.recipe = recipe;
+    }
+
+    public ItemStack getItem() {
+        return item.clone();
+    }
+
+    public @Nullable CraftingRecipe getRecipe() {
+        return recipe;
+    }
+
+    public static @Nullable String getEngineKey(SpeedyBoats plugin, @Nullable ItemStack item) {
+        if (item == null) {
+            return null;
+        }
+
+        ItemMeta meta = item.getItemMeta();
+        if (meta == null) {
+            return null;
+        }
+
+        return meta.getPersistentDataContainer().get(
+                new NamespacedKey(plugin, "EngineKey"),
+                PersistentDataType.STRING
+        );
+    }
+
+    public static boolean isEngine(SpeedyBoats plugin, @Nullable ItemStack item) {
+        return getEngineKey(plugin, item) != null;
+    }
+
+    public static Optional<Engine> byKey(String key) {
+        return REGISTERED.stream().filter(engine -> engine.key.equals(key)).findFirst();
     }
 
     public static @Nullable Engine FromConfig(SpeedyBoats plugin, String key, ConfigurationSection section) {
@@ -136,32 +169,32 @@ public class Engine {
             Logger.getAnonymousLogger().warning("Name was null!");
             return false;
         }
-        
+
         if (multiplier == -1) {
             Logger.getAnonymousLogger().warning("Multiplier was null (or -1)!");
             return false;
         }
-        
+
         if (material == null) {
             Logger.getAnonymousLogger().warning("Material was null!");
             return false;
         }
-        
+
         if (recipe == null) {
             Logger.getAnonymousLogger().warning("Recipe was null!");
             return false;
         }
-        
+
         if (recipe.size() != 3) {
             Logger.getAnonymousLogger().warning("Recipe size wasn't 3!");
             return false;
         }
-        
+
         if (ingredients == null) {
             Logger.getAnonymousLogger().warning("Ingredients was null!");
             return false;
         }
-        
+
         return true;
     }
 }
